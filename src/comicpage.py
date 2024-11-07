@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """comicpage.py - Comic page object and image manipulation methods.
 
-Copyright (C) 2011-2018 Robert Kubik
-https://launchpad.net/~just-me
+Copyright (C) 2011-2024 Robert Kubik
+https://github.com/GeoRW/ACBF
 """
 
 # -------------------------------------------------------------------------
