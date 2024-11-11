@@ -233,7 +233,7 @@ class ComicPage():
         if len(lst) < 1:
           return None
         if len(lst) %2 == 1:
-          return lst[int(((len(lst)+1)/2)-1)]
+          return lst[int(round((float(len(lst)+1)/2)-1, 0))]
         else:
           return int(round(float(sum(lst[int(len(lst)/2)-1:int(len(lst)/2)+1]))/2.0, 0))
 
