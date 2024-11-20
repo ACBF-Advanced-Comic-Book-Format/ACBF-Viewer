@@ -70,7 +70,7 @@ class MainWindow(gtk.Window):
         # Window properties
         gtk.Window.__init__(self, gtk.WindowType.TOPLEVEL)
         self.set_title('ACBF Viewer')
-        self.set_size_request(730, 430)
+        self.set_size_request(1200, 800)
         self.isFullscreen = fullscreen
         if self.isFullscreen:
           self.fullscreen()

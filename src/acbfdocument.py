@@ -251,14 +251,14 @@ class ACBFDocument():
             for image in self.binaries:
               if image.get("id") == image_uri.file_path:
                 decoded = base64.b64decode(image.text)
-                return Image.open(io.StringIO(decoded))
+                return Image.open(io.BytesIO(decoded))
           elif image_uri.file_type == "zip":
             z = zipfile.ZipFile(os.path.join(self.base_dir, image_uri.archive_path))
             z.extract(image_uri.file_path, self._window.tempdir)
             return Image.open(os.path.join(self._window.tempdir, image_uri.file_path))
           elif image_uri.file_type == "http":
               try:
-                http_image = Image.open(io.StringIO(urllib.request.urlopen(image_uri.file_path).read()))
+                http_image = Image.open(io.BytesIO(urllib.request.urlopen(image_uri.file_path).read()))
                 return http_image
               except:
                 md = gtk.MessageDialog(self._window, gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_ERROR, gtk.BUTTONS_CLOSE, "Error loading image: " + page_image_id)
@@ -521,7 +521,6 @@ class ImageURI():
           else:
             self.archive_path = self.archive_path.replace('\\', '/')
             self.file_path = self.file_path.replace('\\', '/')
-
 
 # function to retrieve text value from element without throwing exception
 def get_element_text(element_tree, element):
