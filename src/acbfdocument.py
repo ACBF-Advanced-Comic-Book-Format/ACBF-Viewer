@@ -110,7 +110,7 @@ class ACBFDocument():
         image_uri = ImageURI(image_id)
         self.coverpage = self.load_image(image_uri)
         self.cover_thumb = self.coverpage.copy()
-        self.cover_thumb.thumbnail((200, 200), Image.NEAREST)
+        self.cover_thumb.thumbnail((200, 200), Image.Resampling.NEAREST)
 
         # get authors
         for author in self.bookinfo.findall("author"):

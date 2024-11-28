@@ -1607,7 +1607,7 @@ class LibraryDialog(gtk.Dialog):
 
         # coverpage
         coverpage = acbf_document.coverpage
-        coverpage.thumbnail((int(coverpage.size[0]*150/float(coverpage.size[1])),150), Image.NEAREST)
+        coverpage.thumbnail((int(coverpage.size[0]*150/float(coverpage.size[1])),150), Image.Resampling.NEAREST)
         output_directory = os.path.join(os.path.join(constants.CONFIG_DIR, 'Covers'), acbf_document.book_title[list(acbf_document.book_title.items())[0][0]][0].upper())
         if not os.path.exists(output_directory):
           os.makedirs(output_directory, 0o700)
