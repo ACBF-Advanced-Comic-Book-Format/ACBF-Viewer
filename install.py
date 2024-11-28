@@ -162,7 +162,7 @@ def check_dependencies():
           im_ver = Image.__version__
         except AttributeError:
           im_ver = Image.VERSION
-        assert im_ver >= '1.1.5'
+        assert im_ver >= '9.4'
         print('    Python Imaging Library ...... OK')
     except ImportError:
         print('    !!! Python Imaging Library .. Not found')
