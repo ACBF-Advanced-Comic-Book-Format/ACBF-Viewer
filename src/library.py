@@ -27,7 +27,11 @@ import os.path
 import lxml.etree as xml
 import zipfile
 import shutil
+
 from PIL import Image
+if not hasattr(Image, 'Resampling'): # for older version of Pillow
+  Image.Resampling = Image
+
 import io
 import base64
 from xml.sax.saxutils import escape, unescape
@@ -56,7 +60,7 @@ class LibraryDialog(gtk.Dialog):
     def __init__(self, window):
         self._window = window
         self.library = Library()
-        gtk.Dialog.__init__(self, 'Comic Books Library', window, gtk.DialogFlags.MODAL | gtk.DialogFlags.DESTROY_WITH_PARENT)
+        gtk.Dialog.__init__(self, 'Comic Books Library', None, gtk.DialogFlags.MODAL | gtk.DialogFlags.DESTROY_WITH_PARENT)
         self.set_resizable(True)
         self.set_border_width(8)
         self.set_default_size(900, 600)

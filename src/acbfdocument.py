@@ -26,7 +26,11 @@ import base64
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk as gtk
+
 from PIL import Image
+if not hasattr(Image, 'Resampling'): # for older version of Pillow
+  Image.Resampling = Image
+
 from xml.sax.saxutils import escape
 import io
 import urllib.request, urllib.parse, urllib.error

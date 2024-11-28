@@ -29,7 +29,11 @@ from gi.repository import Gtk as gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 import re
+
 from PIL import Image
+if not hasattr(Image, 'Resampling'): # for older version of Pillow
+  Image.Resampling = Image
+
 from xml.sax.saxutils import escape, unescape
 from time import sleep
 import threading
