@@ -160,15 +160,17 @@ def check_dependencies():
         from PIL import Image
         try:
           im_ver = Image.__version__
+          im_ver_major = int(Image.__version__.split('.')[0])
         except AttributeError:
           im_ver = Image.VERSION
-        assert im_ver >= '9.0'
+          im_ver_major = int(Image.VERSION.split('.')[0])
+        assert im_ver_major >= 9
         print('    Python Imaging Library ...... OK')
     except ImportError:
         print('    !!! Python Imaging Library .. Not found')
         required_found = False
     except AssertionError:
-        print('    !!! Python Imaging Library .. version', Image.VERSION, end=' ')
+        print('    !!! Python Imaging Library .. version', im_ver, end=' ')
         print('found')
         print('    !!! Python Imaging Library 1.1.5 or higher is required')
         required_found = False

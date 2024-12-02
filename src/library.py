@@ -1181,7 +1181,7 @@ class LibraryDialog(gtk.Dialog):
 
         for asterisk in range(rating):
           star = gtk.Image()
-          star.set_from_stock(gtk.STOCK_ABOUT, gtk.IconSize.MENU)
+          star.set_from_stock(gtk.STOCK_YES, gtk.IconSize.MENU)
           star.set_tooltip_text('Rating')
           eventbox = gtk.EventBox()
           eventbox.add(star)
@@ -1190,7 +1190,7 @@ class LibraryDialog(gtk.Dialog):
 
         for asterisk in range(5 - rating):
           blank = gtk.Image()
-          blank.set_from_stock(gtk.STOCK_CLOSE, gtk.IconSize.MENU)
+          blank.set_from_stock(gtk.STOCK_NO, gtk.IconSize.MENU)
           blank.set_tooltip_text('Rating')
           eventbox = gtk.EventBox()
           eventbox.add(blank)
