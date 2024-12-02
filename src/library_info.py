@@ -26,7 +26,9 @@ from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 import io
 import os
-from matplotlib import pyplot
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as pyplot
 import base64
 
 try:
@@ -448,7 +450,7 @@ class LibraryInfoDialog(gtk.Dialog):
           text.set_fontsize(15)
 
         dummy_file = io.BytesIO()
-        pyplot.savefig(dummy_file, format="png", bbox_inches='tight', transaparent=True)
+        pyplot.savefig(dummy_file, format="png", bbox_inches='tight')
         contents = base64.encodebytes(dummy_file.getvalue()).decode()
         dummy_file.close()
 
@@ -470,7 +472,7 @@ class LibraryInfoDialog(gtk.Dialog):
         f.autofmt_xdate(rotation=50)
 
         dummy_file = io.BytesIO()
-        pyplot.savefig(dummy_file, format="png", bbox_inches='tight', transaparent=True)
+        pyplot.savefig(dummy_file, format="png", bbox_inches='tight')
         contents = base64.encodebytes(dummy_file.getvalue()).decode()
         dummy_file.close()
 

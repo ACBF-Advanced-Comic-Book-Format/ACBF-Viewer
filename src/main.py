@@ -284,6 +284,7 @@ class MainWindow(gtk.Window):
         self.acbf_document.contents_table = []
         self.set_title('ACBF Viewer')
         self.toolbar.language.set_active(0)
+        self.comic_page_box.set_opacity(0)
         self.display_page(False, None)
       return True
 

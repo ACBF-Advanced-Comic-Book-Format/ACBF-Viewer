@@ -54,7 +54,7 @@ class Toolbar(gtk.Toolbar):
         self.insert(gtk.SeparatorToolItem(), 3)
 
         self.metadata_button = gtk.ToolButton()
-        self.metadata_button.set_stock_id(gtk.STOCK_INFO)
+        self.metadata_button.set_stock_id(gtk.STOCK_FILE)
         self.metadata_button.set_tooltip_text('Comic Book Meta-Data')
         self.metadata_button.connect("clicked", self._window.show_metadata)
         self.insert(self.metadata_button, 4)

@@ -431,7 +431,7 @@ class PrefsDialog(gtk.Dialog):
         hbox.set_border_width(5)
 
         label = gtk.Label()
-        label.set_markup('Books per page: ')
+        label.set_markup('Books per page default: ')
         hbox.pack_start(label, False, False, 0)
 
         adj = gtk.Adjustment(10, 1, 100, 1.0, 5.0, 0.0)

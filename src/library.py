@@ -108,6 +108,23 @@ class LibraryDialog(gtk.Dialog):
 
         self.get_action_area().add(self.toggle_button_hbox)
 
+        page_per_books_hbox = gtk.HBox(True, 0)
+        label = gtk.Label()
+        label.set_markup('Books per page:')
+        page_per_books_hbox.pack_start(label, True, True, 0)
+        
+        self.books_per_page_combo = gtk.ComboBoxText()
+        books_per_page_combo_list = ['10', '20', '30', '50', '75', '100']
+        if str(self.books_per_page) not in books_per_page_combo_list:
+          self.books_per_page_combo.append_text(str(self.books_per_page))
+        for i in books_per_page_combo_list:
+          self.books_per_page_combo.append_text(i)
+        self.books_per_page_combo.set_active(0)
+        self.books_per_page_combo.connect('changed', self.change_books_per_page)
+        page_per_books_hbox.pack_start(self.books_per_page_combo, True, False, 0)
+        
+        self.get_action_area().add(page_per_books_hbox)
+
         self.add_button(gtk.STOCK_CLOSE, gtk.ResponseType.CLOSE)
         self.get_action_area().set_layout(gtk.ButtonBoxStyle.EDGE)
         
@@ -248,6 +265,14 @@ class LibraryDialog(gtk.Dialog):
           hints = Gdk.WindowHints.USER_POS | Gdk.WindowHints.BASE_SIZE | Gdk.WindowHints.USER_SIZE
         window.set_geometry_hints(window, geometry, hints)
 
+    def change_books_per_page(self, *args):
+      self.books_per_page = int(self.books_per_page_combo.get_active_text())
+      self.number_of_pages = int(round((self.total_books/float(self.books_per_page)) + 0.49999, 0))
+      self.entry.set_width_chars(len(str(self.number_of_pages))*2 + 2)
+      self.display_books()
+      self.update_entry()
+      self.show_all()
+    
     def export_to_csv(self, *args):
       filechooser = gtk.FileChooserDialog(parent=self, title='Save File ...', action=gtk.FileChooserAction.SAVE,
                                 buttons=(gtk.STOCK_CANCEL,gtk.ResponseType.CANCEL,gtk.STOCK_SAVE,gtk.ResponseType.OK))

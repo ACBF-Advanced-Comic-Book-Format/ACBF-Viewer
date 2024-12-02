@@ -27,7 +27,7 @@ try:
 except Exception:
   import portability
 
-VERSION = '2.11'
+VERSION = '3.00'
 LIBRARY_VERSION = '0.4'
 HOME_DIR = portability.get_home_directory()
 CONFIG_DIR = portability.get_config_directory()
