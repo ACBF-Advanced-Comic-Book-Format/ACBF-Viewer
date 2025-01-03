@@ -1,0 +1,26 @@
+acbf-viewer (3.0) noble; urgency=low
+
+  * Version fix.
+
+ -- Robert Kubik <pastierovic@gmail.com>  Fri, 3 Jan 2025 13:30:00 +0200
+
+acbf-viewer (2.10) bionic; urgency=low
+
+  * Version fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 10 Nov 2019 14:31:00 +0200
+
+acbf-viewer (2.1) bionic; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 10 Nov 2019 14:25:00 +0200
+
+acbf-viewer (2.01-2) bionic; urgency=low
+
+  * Build on Bionic.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 06 Jan 2019 11:51:00 +0200
+
+# Older entries have been removed from this changelog.
+# To read the complete changelog use `apt changelog acbf-viewer`.

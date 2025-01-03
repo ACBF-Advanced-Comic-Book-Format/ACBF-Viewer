@@ -1,0 +1,203 @@
+acbf-viewer (3.0) noble; urgency=low
+
+  * Version fix.
+
+ -- Robert Kubik <pastierovic@gmail.com>  Fri, 3 Jan 2025 13:30:00 +0200
+
+acbf-viewer (2.10) bionic; urgency=low
+
+  * Version fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 10 Nov 2019 14:31:00 +0200
+
+acbf-viewer (2.1) bionic; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 10 Nov 2019 14:25:00 +0200
+
+acbf-viewer (2.01-2) bionic; urgency=low
+
+  * Build on Bionic.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 06 Jan 2019 11:51:00 +0200
+
+acbf-viewer (2.01-1) artful; urgency=low
+
+  * Build on Artful.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 06 Jan 2019 11:47:00 +0200
+
+acbf-viewer (2.01) xenial; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 06 Jan 2019 11:23:00 +0200
+
+acbf-viewer (2.00-10) xenial; urgency=low
+
+  * Build on Xenial. Build fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 13:54:00 +0200
+
+acbf-viewer (2.00-9) xenial; urgency=low
+
+  * Build on Xenial. Build fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 12:14:00 +0200
+
+acbf-viewer (2.00-8) xenial; urgency=low
+
+  * Build on Xenial. Build debug.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 12:03:00 +0200
+
+acbf-viewer (2.00-7) xenial; urgency=low
+
+  * Build on Xenial. Another depenedency fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 11:54:00 +0200
+
+acbf-viewer (2.00-6) xenial; urgency=low
+
+  * Build on Xenial. Another build fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 11:40:00 +0200
+
+acbf-viewer (2.00-5) xenial; urgency=low
+
+  * Build on Xenial. Build fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 11:32:00 +0200
+
+acbf-viewer (2.00-4) xenial; urgency=low
+
+  * Build on Xenial. Another dependency fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 11:19:00 +0200
+
+acbf-viewer (2.00-3) xenial; urgency=low
+
+  * Build on Xenial. Another dependency fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 11:14:00 +0200
+
+acbf-viewer (2.00-2) xenial; urgency=low
+
+  * Build on Xenial. Dependency fix.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 11:05:00 +0200
+
+acbf-viewer (2.00-1) xenial; urgency=low
+
+  * Build on Xenial.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 10:57:00 +0200
+
+acbf-viewer (2.00) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 18 Nov 2018 10:44:00 +0200
+
+acbf-viewer (1.11-3) trusty; urgency=low
+
+  * Fix dependency.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 24 Jun 2018 14:22:00 +0200
+
+acbf-viewer (1.11-2) trusty; urgency=low
+
+  * Fix dependency.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 24 Jun 2018 14:19:00 +0200
+
+acbf-viewer (1.11-1) trusty; urgency=low
+
+  * Fix dependency.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 24 Jun 2018 11:00:00 +0200
+
+acbf-viewer (1.11) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 03 Jun 2018 14:00:00 +0200
+
+acbf-viewer (1.10) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sat, 17 Mar 2018 12:38:59 +0200
+
+acbf-viewer (1.09) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Sun, 10 Sep 2017 15:16:59 +0200
+
+acbf-viewer (1.08-1) trusty; urgency=low
+
+  * Fix release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Thu, 18 Aug 2017 11:53:59 +0200
+
+acbf-viewer (1.08) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Thu, 17 Aug 2017 16:17:59 +0200
+
+acbf-viewer (1.07) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Thu, 13 Jul 2017 17:54:59 +0200
+
+acbf-viewer (1.06) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Thu, 25 Nov 2016 08:31:59 +0200
+
+acbf-viewer (1.05) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Thu, 13 Oct 2016 20:42:59 +0200
+
+acbf-viewer (1.04) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Fri, 01 Jan 2016 11:46:59 +0200
+
+acbf-viewer (1.03-3) trusty; urgency=low
+
+  * Fixed version number.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Mon, 09 Oct 2014 21:46:59 +0200
+
+acbf-viewer (1.03-2) trusty; urgency=low
+
+  * Fixed dependency.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Mon, 09 Oct 2014 21:46:59 +0200
+
+acbf-viewer (1.03-1) trusty; urgency=low
+
+  * Fixed dependency.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Mon, 09 Oct 2014 21:46:59 +0200
+
+acbf-viewer (1.03) trusty; urgency=low
+
+  * New upstream release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Mon, 09 Oct 2014 21:46:59 +0200
+
+acbf-viewer (1.02-8) trusty; urgency=low
+
+  * Initial release.
+
+ -- Robert Pastierovic (Debian packaging key) <pastierovic@gmail.com>  Mon, 29 Sep 2014 07:45:59 +0200

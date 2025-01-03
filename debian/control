@@ -1,0 +1,27 @@
+Source: acbf-viewer 
+Section: x11
+Priority: optional
+Maintainer: Robert Kubik <pastierovic@gmail.com>
+Build-Depends: debhelper (>= 10.0.0)
+Build-Depends-Indep: python3 (>= 3.4.0), python3-gi, gobject-introspection, gir1.2-gtk-3.0 (>= 3.10), python3-pil (>= 9), python3-lxml, zlib1g, patool, python3-matplotlib
+Standards-Version: 3.9.5.0
+
+Package: acbf-viewer
+Architecture: all
+Homepage: https://github.com/ACBF-Advanced-Comic-Book-Format
+XB-Python-Version: all
+Depends: ${misc:Depends}, python3 (>= 3.4.0), python3-gi, gobject-introspection, gir1.2-gtk-3.0 (>= 3.10), python3-pil (>= 9), python3-lxml, zlib1g, patool, python3-matplotlib
+Suggests: unrar, acbf-editor
+Description: GTK Comic Book Viewer
+ ACBF Viewer is a viewer application capable of reading ACBF, CBZ, CBR and
+ ACV comic book file formats. It is capable of displaying comic books in 3
+ viewing modes (one page, zoom to page width and zoom on a certain
+ frame/comic book panel), it displays various comic book metadata, table
+ of contents, can easily switch between different text-layers
+ (translations).
+ Text-layers are drawn automatically to fit into defined text-areas
+ (bubbles), different fonts can be defined for semantic tags used on
+ text-layers.
+ Comic book library can be filled with comic books which than can be
+ sorted and filtered by different kinds of available metadata.
+
