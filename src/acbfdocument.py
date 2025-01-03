@@ -1,7 +1,7 @@
 """acbfdocument.py - ACBF Document object.
 
-Copyright (C) 2011-2024 Robert Kubik
-https://github.com/GeoRW/ACBF
+Copyright (C) 2011-2025 Robert Kubik
+https://github.com/ACBF-Advanced-Comic-Book-Format
 """
 
 # -------------------------------------------------------------------------
@@ -36,13 +36,14 @@ import io
 import urllib.request, urllib.parse, urllib.error
 import re
 import zipfile
+import uuid
 from matplotlib import font_manager
 
 try:
   from . import constants
-except Exception:
+except:
   import constants
-
+  
 class ACBFDocument():
 
     def __init__(self, window,
@@ -63,11 +64,12 @@ class ACBFDocument():
         self.has_frames = False
         self.fonts_dir = os.path.join(self._window.tempdir, 'Fonts')
         self.font_styles = {'normal': '', 'emphasis': '', 'strong': '', 'code': '', 'commentary': '', 'sign': '', 'formal': '', 'heading': '', 'letter': '', 'audio': '', 'thought': ''}
-        self.font_colors = {'inverted': '', 'speech': '', 'code': '#000000', 'commentary': '#000000', 'sign': '#000000', 'formal': '#000000', 'heading': '#000000', 'letter': '#000000', 'audio': '#000000', 'thought': '#000000'}
+        self.font_colors = {'inverted': '#ffffff', 'speech': '#000000', 'code': '#000000', 'commentary': '#000000', 'sign': '#000000', 'formal': '#000000', 'heading': '#000000', 'letter': '#000000', 'audio': '#000000', 'thought': '#000000'}
         for style in ['normal', 'emphasis', 'strong', 'code', 'commentary', 'sign', 'formal', 'heading', 'letter', 'audio', 'thought']:
           self.font_styles[style] = constants.default_font
         
-        try:
+        if self.filename:
+          try:
             self.base_dir = os.path.dirname(filename)
             self.tree = xml.parse(source = filename)
             root = self.tree.getroot()
@@ -94,9 +96,9 @@ class ACBFDocument():
             self.stylesheet = self.tree.find("style")
             if self.stylesheet != None:
               self.load_stylesheet()
-            self.tree = None # keep memory usage low
+            #self.tree = None # keep memory usage low
             self.valid = True
-        except Exception as inst:
+          except Exception as inst:
             print("Unable to open ACBF file: %s %s" % (filename, inst))
             self.valid = False
             return
@@ -193,7 +195,9 @@ class ACBFDocument():
         # sequence
         self.sequences = []
         for sequence in self.bookinfo.findall("sequence"):
-          if sequence.text != None and sequence.get("title") != None:
+          if sequence.text != None and sequence.get("title") != None and sequence.get("volume") != None:
+            self.sequences.append((escape(sequence.get("title") + ' ' + sequence.get("volume")), sequence.text))
+          elif sequence.text != None and sequence.get("title") != None:
             self.sequences.append((escape(sequence.get("title")), sequence.text))
 
         # databaseref
@@ -236,6 +240,9 @@ class ACBFDocument():
         self.source = self.source[:-1]
 
         self.id = get_element_text(self.docinfo, 'id')
+        if self.id == '':
+          self.id = str(uuid.uuid1())
+        
         self.version = get_element_text(self.docinfo, 'version')
 
         for line in self.docinfo.findall("history/" + "p"):
@@ -249,7 +256,7 @@ class ACBFDocument():
             self.has_frames = True
 
     def load_image(self, image_uri):
-        #print image_uri.file_type, image_uri.archive_path, image_uri.file_path, self._window.tempdir
+        #print(image_uri.file_type, image_uri.archive_path, image_uri.file_path, self._window.tempdir)
         try:
           if image_uri.file_type == "embedded":
             for image in self.binaries:
@@ -382,6 +389,14 @@ class ACBFDocument():
 
         return text_areas, references
 
+    def get_page_transition(self, page_num):
+        if page_num == 1:
+          return 'undefined'
+        elif self.pages[page_num - 2].get("transition") == None:
+          return 'undefined'
+        else:
+          return self.pages[page_num - 2].get("transition")
+
     def get_contents_table(self):
         self.contents_table = []
         for lang in self.languages:
@@ -393,22 +408,22 @@ class ACBFDocument():
           self.contents_table.append(contents)
 
     def load_stylesheet(self):
-        #print self.stylesheet.text
+        #print(self.stylesheet.text)
         #sheet = cssutils.parseString(self.stylesheet.text)
         font = ''
         
         for rule in self.stylesheet.text.replace('\n', ' ').split('}'):
           if rule.strip() != '':
             selector = rule.strip().split('{')[0].strip().upper()
-            #print "selectorText: ", selector
+            #print("selectorText: ", selector)
             font_style = 'normal'
             font_weight = 'normal'
             font_stretch = 'normal'
             font_families = ''
             for style in rule.strip().split('{')[1].strip().split(';'):
               if style != '':
-                #print "style:", style.split(':')[0].strip()
-                #print "value:", style.split(':')[1].strip()
+                #print("style:", style.split(':')[0].strip())
+                #print("value:", style.split(':')[1].strip())
                 current_style = style.split(':')[0].strip().upper()
                 if current_style == 'FONT-FAMILY':
                   font_families = style.split(':')[1].strip()
@@ -483,8 +498,7 @@ class ACBFDocument():
         for style in ['emphasis', 'strong', 'code', 'commentary', 'sign', 'formal', 'heading', 'letter', 'audio', 'thought']:
           if self.font_styles[style] == '':
             self.font_styles[style] = self.font_styles['normal']
-        #print self.font_styles
-        #print self.font_colors
+        #print(self.font_styles)
 
     def extract_fonts(self):
       if os.path.exists(os.path.join(self.base_dir, 'Fonts')) and not os.path.exists(self.fonts_dir):
@@ -525,6 +539,7 @@ class ImageURI():
           else:
             self.archive_path = self.archive_path.replace('\\', '/')
             self.file_path = self.file_path.replace('\\', '/')
+
 
 # function to retrieve text value from element without throwing exception
 def get_element_text(element_tree, element):

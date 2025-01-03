@@ -1,7 +1,7 @@
 """Portability functions for ACBFV.
 
-Copyright (C) 2011-2024 Robert Kubik
-https://github.com/GeoRW/ACBF
+Copyright (C) 2011-2025 Robert Kubik
+https://github.com/ACBF-Advanced-Comic-Book-Format
 """
 
 # -------------------------------------------------------------------------
@@ -53,10 +53,9 @@ def get_config_directory():
 
 
 def get_data_directory():
-    """Return the path to the ACBFV data directory. On UNIX, this will
-    be /tmp/acbfv, on Windows it will be
-    C:\Documents and settings\[user]\Application settings\Temp\acbfv.
-    """
+    #Return the path to the ACBFV data directory. On UNIX, this will
+    #be /tmp/acbfv, on Windows it will be
+    #C:\Documents and settings\[user]\Application settings\Temp\acbfv.
 
     return str(os.path.join(tempfile.gettempdir(), 'acbfv'))
 

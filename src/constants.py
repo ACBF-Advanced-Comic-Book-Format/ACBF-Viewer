@@ -1,7 +1,7 @@
 """constants.py - Miscellaneous constants.
 
-Copyright (C) 2011-2024 Robert Kubik
-https://github.com/GeoRW/ACBF
+Copyright (C) 2011-2025 Robert Kubik
+https://github.com/ACBF-Advanced-Comic-Book-Format
 """
 
 # -------------------------------------------------------------------------
@@ -27,7 +27,7 @@ try:
 except Exception:
   import portability
 
-VERSION = '3.00'
+VERSION = '3.0'
 LIBRARY_VERSION = '0.4'
 HOME_DIR = portability.get_home_directory()
 CONFIG_DIR = portability.get_config_directory()

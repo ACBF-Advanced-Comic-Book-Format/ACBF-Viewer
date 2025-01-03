@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """comicpage.py - Comic page object and image manipulation methods.
 
-Copyright (C) 2011-2024 Robert Kubik
-https://github.com/GeoRW/ACBF
+Copyright (C) 2011-2025 Robert Kubik
+https://github.com/ACBF-Advanced-Comic-Book-Format
 """
 
 # -------------------------------------------------------------------------
@@ -663,8 +663,8 @@ class ComicPage():
           if text_area[3] != 0:
             draw_image = draw_image.rotate(text_area[3], Image.Resampling.BILINEAR, 1)
             rotated_image_size = draw_image.size
-            left = (rotated_image_size[0] - original_polygon_size[0])//2
-            upper = (rotated_image_size[1] - original_polygon_size[1])//2
+            left = (rotated_image_size[0] - original_polygon_size[0])/2
+            upper = (rotated_image_size[1] - original_polygon_size[1])/2
             right = original_polygon_size[0] + left
             lower = original_polygon_size[1] + upper
             draw_image = draw_image.crop((left, upper, right, lower))
@@ -1298,8 +1298,8 @@ class ComicPage():
           if text_area[3] != 0:
             draw_image = draw_image.rotate(text_area[3], Image.Resampling.BILINEAR, 1)
             rotated_image_size = draw_image.size
-            left = (rotated_image_size[0] - original_polygon_size[0])//2
-            upper = (rotated_image_size[1] - original_polygon_size[1])//2
+            left = (rotated_image_size[0] - original_polygon_size[0])/2
+            upper = (rotated_image_size[1] - original_polygon_size[1])/2
             right = original_polygon_size[0] + left
             lower = original_polygon_size[1] + upper
             draw_image = draw_image.crop((left, upper, right, lower))
