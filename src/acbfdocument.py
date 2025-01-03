@@ -195,7 +195,7 @@ class ACBFDocument():
         # sequence
         self.sequences = []
         for sequence in self.bookinfo.findall("sequence"):
-          if sequence.text != None and sequence.get("title") != None and sequence.get("volume") != None:
+          if sequence.text != None and sequence.get("title") != None and sequence.get("volume") != None and len(sequence.get("volume")) > 0:
             self.sequences.append((escape(sequence.get("title") + ' ' + sequence.get("volume")), sequence.text))
           elif sequence.text != None and sequence.get("title") != None:
             self.sequences.append((escape(sequence.get("title")), sequence.text))

@@ -318,7 +318,7 @@ class LibraryDialog(gtk.Dialog):
         rating = opened_book[7]
         has_frames = opened_book[8]
         finished = opened_book[9]
-        title, annotation, sequences, genres, languages, im_formats = self.get_book_details(file_path)
+        title, annotation, sequences, genres, languages, im_formats, table_of_contents = self.get_book_details(file_path)
 
         rating_str = ''
         for asterisk in range(rating):
@@ -1004,7 +1004,15 @@ class LibraryDialog(gtk.Dialog):
           im_formats = im_formats + ', ' + row[0]
         im_formats = im_formats[2:]
 
-        return title[0], annotation[0], sequences, genres, languages, im_formats
+        self.library.cursor.execute("SELECT chapters \
+                                     FROM contents \
+                                     WHERE file_path = ? \
+                                       AND (lang = ? OR lang IS NULL)", (filename, book_language[0]))
+        table_of_contents = self.library.cursor.fetchone()
+        if table_of_contents == None or table_of_contents == (None,):
+          table_of_contents = ['']
+
+        return title[0], annotation[0], sequences, genres, languages, im_formats, table_of_contents[0]
         
 
     def open_book(self, widget, event, filename):
@@ -1021,7 +1029,7 @@ class LibraryDialog(gtk.Dialog):
         dialog.add_action_widget(open_button, gtk.ResponseType.APPLY)
         open_button.grab_focus()
 
-        title, annotation, sequences, genres, languages, im_formats = self.get_book_details(filename)
+        title, annotation, sequences, genres, languages, im_formats, table_of_contents = self.get_book_details(filename)
 
         #meta-data
         self.library.cursor.execute("SELECT coverpage, publish_date, publisher, authors, \
@@ -1105,6 +1113,8 @@ class LibraryDialog(gtk.Dialog):
         else:
           markup = markup + has_frames
         markup = markup + '\n<b>Languages: </b> ' + languages
+        if table_of_contents != '':
+          markup = markup + '\n<b>Table of Contents: </b> ' + table_of_contents
         if im_formats != '':
           markup = markup + '\n<b>Image Format(s): </b> ' + im_formats
         markup = markup + '\n<b>Filename: </b> ' + escape(filename)
@@ -1299,7 +1309,7 @@ class LibraryDialog(gtk.Dialog):
           books.append(book)
 
         for book in books:
-          title, annotation, sequences, genres, languages, im_formats = self.get_book_details(book['file_path'])
+          title, annotation, sequences, genres, languages, im_formats, table_of_contents = self.get_book_details(book['file_path'])
 
           rating = '  '
           for asterisk in range(book['rating']):
@@ -1346,6 +1356,8 @@ class LibraryDialog(gtk.Dialog):
               markup = markup + '\n<b>Annotation: </b> ' + annotation + '\n<b>Frames definitions: </b> '
               markup = markup + book['has_frames']
               markup = markup + '\n<b>Languages: </b> ' + languages
+              if table_of_contents != '':
+                markup = markup + '\n<b>Table of Contents: </b> ' + table_of_contents
               if im_formats != '':
                 markup = markup + '\n<b>Image Format(s): </b> ' + im_formats
 
@@ -1583,8 +1595,9 @@ class LibraryDialog(gtk.Dialog):
           self.library.cursor.execute('DELETE FROM languages WHERE file_path=?', t)
           self.library.cursor.execute('DELETE FROM image_formats WHERE file_path=?', t)
           self.library.cursor.execute('DELETE FROM genres WHERE file_path=?', t)
+          self.library.cursor.execute('DELETE FROM contents WHERE file_path=?', t)
         
-        coverpage, book_title, publish_date, publisher, authors, genres, sequence, annotation, languages, characters, pages, license, has_frames, im_formats, sequences, langs, formats = self.load_file(filename, show_dialog)
+        coverpage, book_title, publish_date, publisher, authors, genres, sequence, annotation, languages, characters, pages, license, has_frames, im_formats, sequences, langs, formats, table_of_contents = self.load_file(filename, show_dialog)
 
         if book_title == {}:
           return False
@@ -1621,6 +1634,10 @@ class LibraryDialog(gtk.Dialog):
             t = (filename, genre[0], genre[1])
             self.library.cursor.execute('INSERT INTO genres VALUES (?,?,?)', t)
 
+        for contents in table_of_contents:
+          t = (filename, contents[0], contents[1])
+          self.library.cursor.execute('INSERT INTO contents VALUES (?,?,?)', t)
+
         self.library.conn.commit()
         
         return True
@@ -1632,7 +1649,7 @@ class LibraryDialog(gtk.Dialog):
         acbf_document = acbfdocument.ACBFDocument(self, filename)
 
         if not acbf_document.valid:
-          return None, None, None, None, None, None, None, None, None, None, None, None
+          return None, None, None, None, None, None, None, None, None, None, None, None, None
 
         # coverpage
         coverpage = acbf_document.coverpage
@@ -1686,6 +1703,18 @@ class LibraryDialog(gtk.Dialog):
             image_formats.append(im_format)
         im_formats_str = str(image_formats)[1:][:-1].replace("u'", "").replace("'", "")
 
+        # table of contents
+        table_of_contents = []
+        for idx, language in enumerate(acbf_document.languages):
+          if language[1] == 'FALSE' and language[0] == '??':
+            break
+          else:
+            lang = language[0]
+            contents = ''
+            for i in acbf_document.contents_table[idx]:
+              contents = contents + i[0] + ', '
+            table_of_contents.append((lang, contents[:-2]))
+
         # clear library temp directory
         for root, dirs, files in os.walk(self._window.library_dir):
           for f in files:
@@ -1697,7 +1726,7 @@ class LibraryDialog(gtk.Dialog):
                acbf_document.authors, acbf_document.genres_dict, sequences, acbf_document.annotation, \
                languages, acbf_document.characters, acbf_document.pages_total, acbf_document.license, \
                acbf_document.has_frames, im_formats_str, acbf_document.sequences, acbf_document.languages, \
-               image_formats
+               image_formats, table_of_contents
 
     
 class Library():
@@ -1727,6 +1756,8 @@ class Library():
              (file_path TEXT, format TEXT)''')
         self.cursor.execute('''CREATE TABLE genres
              (file_path TEXT, genre TEXT, perc INTEGER)''')
+        self.cursor.execute('''CREATE TABLE contents
+             (file_path TEXT, lang TEXT, chapters TEXT, PRIMARY KEY (file_path, lang))''')
         self.cursor.execute('''CREATE TABLE library_info
              (item TEXT, value TEXT)''')
         t = [('genre_counts', 'x'), ('rating_counts', 'x'), ('language_counts', 'x'), ('publish_date_counts', 'x'), ('publisher_counts', 'x'),
@@ -1800,11 +1831,21 @@ class Library():
       elif os.path.isfile(self.library_db_path):
         self.conn = sqlite3.connect(self.library_db_path)
         self.cursor = self.conn.cursor()
+
+        #DB structure updates
         try:
           self.cursor.execute('''ALTER TABLE genres ADD perc INTEGER''')
           self.conn.commit()
         except:
           None
+
+        try:
+          self.cursor.execute('''CREATE TABLE contents
+             (file_path TEXT, lang TEXT, chapters TEXT, PRIMARY KEY (file_path, lang))''')
+          self.conn.commit()
+        except:
+          None
+
         """for row in self.cursor.execute('SELECT * FROM books '):
           print row
         for row in  self.cursor.execute('SELECT * FROM titles'):
@@ -1835,6 +1876,8 @@ class Library():
              (file_path TEXT, lang TEXT, annotation TEXT, PRIMARY KEY (file_path, lang))''')
         self.cursor.execute('''CREATE TABLE sequences
              (file_path TEXT, sequence_title TEXT, sequence_number INTEGER, PRIMARY KEY (file_path, sequence_title))''')
+        self.cursor.execute('''CREATE TABLE contents
+             (file_path TEXT, lang TEXT, chapters TEXT, PRIMARY KEY (file_path, lang))''')
         self.cursor.execute('''CREATE TABLE languages
              (file_path TEXT, lang TEXT, show TEXT)''')
         self.cursor.execute('''CREATE TABLE image_formats
@@ -1859,6 +1902,7 @@ class Library():
       self.cursor.execute('DELETE FROM languages WHERE file_path=?', t)
       self.cursor.execute('DELETE FROM image_formats WHERE file_path=?', t)
       self.cursor.execute('DELETE FROM genres WHERE file_path=?', t)
+      self.cursor.execute('DELETE FROM contents WHERE file_path=?', t)
       self.conn.commit()
       return
 
