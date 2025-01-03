@@ -492,8 +492,9 @@ class MainWindow(gtk.Window):
       while gtk.events_pending():
         gtk.main_iteration()
 
-      prepared_file = fileprepare.FilePrepare(self, self.filename, self.tempdir, True)
-      self.filename = prepared_file.filename
+      if self.filename != None:
+        prepared_file = fileprepare.FilePrepare(self, self.filename, self.tempdir, True)
+        self.filename = prepared_file.filename
       if filename_before != self.filename:
         self.acbf_document = acbfdocument.ACBFDocument(self, self.filename)
         self.toolbar.update()

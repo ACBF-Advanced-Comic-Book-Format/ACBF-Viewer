@@ -1,6 +1,6 @@
 """filechooser.py - FileChooserDialog implementation.
 
-Copyright (C) 2011-2025 Robert Kubik
+Copyright (C) 2011-2024 Robert Kubik
 https://github.com/ACBF-Advanced-Comic-Book-Format
 """
 
@@ -22,13 +22,16 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk as gtk
 import os
+import sys
 
 try:
   from . import constants
   from . import fileprepare
-except Exception:
+  from . import preferences
+except:
   import constants
   import fileprepare
+  import preferences
 
 class FileChooserDialog(gtk.FileChooserDialog):
     
@@ -38,11 +41,13 @@ class FileChooserDialog(gtk.FileChooserDialog):
                        title='Open File',action=gtk.FileChooserAction.OPEN,
                        buttons=(gtk.STOCK_CANCEL,gtk.ResponseType.CANCEL,gtk.STOCK_OPEN,gtk.ResponseType.OK)):
         self._window = window
-        gtk.FileChooserDialog.__init__(self, 'Open File', window, gtk.FileChooserAction.OPEN,
+        gtk.FileChooserDialog.__init__(self, title='Open File',action=gtk.FileChooserAction.OPEN,
                                        buttons=(gtk.STOCK_CANCEL,gtk.ResponseType.CANCEL,gtk.STOCK_OPEN,gtk.ResponseType.OK))
         self.set_default_response(gtk.ResponseType.OK)
-        self.set_current_folder(os.path.dirname(self._window.original_filename))
-
+        
+        self.preferences = preferences.Preferences()
+        self.set_current_folder(self.preferences.get_value("comics_dir"))
+ 
         # filter
         filter = gtk.FileFilter()
         filter.set_name("Comic files")
@@ -72,4 +77,3 @@ class FileChooserDialog(gtk.FileChooserDialog):
           self._window.filename = prepared_file.filename
           self._window.original_filename = self.get_filename()
         self.destroy()
-
