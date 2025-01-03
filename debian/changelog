@@ -1,3 +1,9 @@
+acbf-viewer (3.0-1) noble; urgency=low
+
+  * Fix.
+
+ -- Robert Kubik <pastierovic@gmail.com>  Fri, 3 Jan 2025 15:10:00 +0200
+
 acbf-viewer (3.0) noble; urgency=low
 
   * Version fix.
