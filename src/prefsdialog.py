@@ -1,7 +1,7 @@
 """prefsdialog.py - Preferences Dialog.
 
-Copyright (C) 2011-2024 Robert Kubik
-https://github.com/GeoRW/ACBF
+Copyright (C) 2011-2025 Robert Kubik
+https://github.com/ACBF-Advanced-Comic-Book-Format
 """
 
 # -------------------------------------------------------------------------
@@ -47,6 +47,79 @@ class PrefsDialog(gtk.Dialog):
 
         notebook = gtk.Notebook()
         notebook.set_border_width(3)
+
+        ## General tab
+        scrolled = gtk.ScrolledWindow()
+        scrolled.set_policy(gtk.PolicyType.NEVER, gtk.PolicyType.AUTOMATIC)
+        scrolled.set_size_request(500, 290)
+        tab = gtk.VBox(False, 0)
+        tab.set_border_width(5)
+        scrolled.add_with_viewport(tab)
+
+        # default language layer
+        hbox = gtk.HBox(False, 0)
+        hbox.set_border_width(5)
+
+        label = gtk.Label()
+        label.set_markup('Default language layer: ')
+        label.set_tooltip_text("Default language layer with which books are opened. This setting also has effect on book titles/annotations displayed in library.")
+        hbox.pack_start(label, False, False, 0)
+
+        self.default_language = gtk.ComboBoxText()
+        for lang in constants.LANGUAGES:
+          self.default_language.append_text(lang.replace('??#', 'None'))
+        self.default_language.set_active(int(self._window.preferences.get_value("default_language")))
+        hbox.pack_start(self.default_language, False, False, 0)
+        self.default_language.connect('changed', self.set_default_language)
+
+        tab.pack_start(hbox, False, False, 0)
+
+        # default comic books dir
+        hbox = gtk.HBox(False, 0)
+        hbox.set_border_width(5)
+        
+        label = gtk.Label()
+        label.set_markup('Default comics folder: ')
+        hbox.pack_start(label, False, False, 0)
+        
+        self.comics_dir = self._window.preferences.get_value("comics_dir")
+        if len(self.comics_dir) > 25:
+          comics_dir_label = self.comics_dir[0:25] + ' ...'
+        else:
+          comics_dir_label = self.comics_dir
+        self.comics_dir_button = gtk.Button.new_with_label(comics_dir_label)
+        self.comics_dir_button.connect('clicked', self.select_folder)
+        
+        hbox.pack_start(self.comics_dir_button, False, False, 0)
+        tab.pack_start(hbox, False, False, 0)
+
+        # tmpfs
+        hbox = gtk.HBox(False, 0)
+        hbox.set_border_width(5)
+
+        self.tmpfs_button = gtk.CheckButton("Custom temporary directory: ")
+        self.tmpfs_button.set_border_width(5)
+        self.tmpfs_button.set_tooltip_text("Directory where comic archives are unpacked. Use /dev/shm for temporary file storage filesystem (tmpfs) instead of default system temp directory to store in RAM.")
+        self.tmpfs_button.connect("toggled", self.set_tmpfs)
+
+        hbox.pack_start(self.tmpfs_button, False, False, 0)
+
+        self.tmpfs_entry = gtk.Entry()
+        self.tmpfs_entry.set_text(self._window.preferences.get_value("tmpfs_dir"))
+        self.tmpfs_entry.connect('insert_text', self.entry_changed)
+        
+        hbox.pack_start(self.tmpfs_entry, False, False, 0)
+
+        if self._window.preferences.get_value("tmpfs") == 'True':
+          self.tmpfs_button.set_active(True)
+          self.tmpfs_entry.set_sensitive(True)
+        else:
+          self.tmpfs_button.set_active(False)
+          self.tmpfs_entry.set_sensitive(False)
+
+        tab.pack_start(hbox, False, False, 0)
+        
+        notebook.insert_page(scrolled, gtk.Label('General'), -1)
 
         ## Layout
         scrolled = gtk.ScrolledWindow()
@@ -136,24 +209,6 @@ class PrefsDialog(gtk.Dialog):
         self.scroll_step.set_active(int(self._window.preferences.get_value("scroll_step")))
         hbox.pack_start(self.scroll_step, False, False, 0)
         self.scroll_step.connect('changed', self.set_scroll_step)
-
-        tab.pack_start(hbox, False, False, 0)
-
-        # default language layer
-        hbox = gtk.HBox(False, 0)
-        hbox.set_border_width(5)
-
-        label = gtk.Label()
-        label.set_markup('Default language layer: ')
-        label.set_tooltip_text("Default language layer with which books are opened. This setting also has effect on book titles/annotations displayed in library.")
-        hbox.pack_start(label, False, False, 0)
-
-        self.default_language = gtk.ComboBoxText()
-        for lang in constants.LANGUAGES:
-          self.default_language.append_text(lang.replace('??#', 'None'))
-        self.default_language.set_active(int(self._window.preferences.get_value("default_language")))
-        hbox.pack_start(self.default_language, False, False, 0)
-        self.default_language.connect('changed', self.set_default_language)
 
         tab.pack_start(hbox, False, False, 0)
 
@@ -482,7 +537,40 @@ class PrefsDialog(gtk.Dialog):
 
         self.isChanged = False
 
+        self.connect('response', self.close_preferences)
         self.run()
+
+    def select_folder(self, *args):
+      filechooser = gtk.FileChooserDialog(title='Select Folder ...', action=gtk.FileChooserAction.SELECT_FOLDER,
+                                buttons=(gtk.STOCK_CANCEL,gtk.ResponseType.CANCEL,gtk.STOCK_OPEN,gtk.ResponseType.OK))
+
+      filechooser.set_current_folder(self._window.preferences.get_value("comics_dir"))
+
+      response = filechooser.run()
+      if response != gtk.ResponseType.OK:
+        filechooser.destroy()
+        return
+
+      self.comics_dir = str(filechooser.get_filename())
+      if len(self.comics_dir) > 25:
+        comics_dir_label = self.comics_dir[0:25] + ' ...'
+      else:
+        comics_dir_label = self.comics_dir
+      
+      self.comics_dir_button.set_label(comics_dir_label)
+      self._window.preferences.set_value("comics_dir", self.comics_dir)
+      filechooser.destroy()
+      
+    def set_tmpfs(self, widget, *args):
+        if self.tmpfs_button.get_active():
+          self.tmpfs_entry.set_sensitive(True)
+          self._window.preferences.set_value("tmpfs", "True")
+          self._window.preferences.set_value("tmpfs_dir", self.tmpfs_entry.get_text())
+        else:
+          self._window.preferences.set_value("tmpfs", "False")
+          self.tmpfs_entry.set_sensitive(False)
+        self.isChanged = True
+        return True
 
     def set_default_language(self, widget):
         self._window.preferences.set_value("default_language", str(self.default_language.get_active()))
@@ -655,3 +743,9 @@ class PrefsDialog(gtk.Dialog):
         self.isChanged = True
         return True
     
+    def entry_changed(self, widget, *args):
+        self.isChanged = True
+
+    def close_preferences(self, *args):
+        if self.isChanged:
+          self._window.preferences.set_value("tmpfs_dir", self.tmpfs_entry.get_text())

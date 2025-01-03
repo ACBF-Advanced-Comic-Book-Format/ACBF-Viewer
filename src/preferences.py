@@ -1,7 +1,7 @@
 """preferences.py - viewer preferences (CONFIG_DIR/preferences.xml).
 
-Copyright (C) 2011-2024 Robert Kubik
-https://github.com/GeoRW/ACBF
+Copyright (C) 2011-2025 Robert Kubik
+https://github.com/ACBF-Advanced-Comic-Book-Format
 """
 
 # -------------------------------------------------------------------------
@@ -52,7 +52,7 @@ class Preferences():
       else:
         self.create_new_tree()
         f = open(self.prefs_file_path, 'w')
-        print (xml.tostring(self.tree, encoding='unicode', pretty_print=True))
+        #print (xml.tostring(self.tree, encoding='unicode', pretty_print=True))
         f.write(xml.tostring(self.tree, encoding='unicode', pretty_print=True))
         f.close()
 
@@ -96,7 +96,7 @@ class Preferences():
                       "popup_text_showing", "progress_bar_showing", "progress_bar_width", "progress_bar_color", "normal_font", "emphasis_font",
                       "strong_font", "code_font", "commentary_font", "font_color_default", "font_color_inverted", "library_books_per_page",
                       "library_cleanup", "library_layout", "library_default_sort_order", "library_custom_filters", "default_language",
-                      "autorotate", "tmpfs", "crop_border", "animation", "animation_delay"]:
+                      "autorotate", "tmpfs", "tmpfs_dir", "crop_border", "animation", "animation_delay", "comics_dir"]:
         if self.tree.find(element) == None:
           self.set_default_value(element)
 
@@ -184,9 +184,15 @@ class Preferences():
         """
         tmpfs = xml.SubElement(self.tree, "tmpfs")
         tmpfs.text = "False"
+      elif element == 'tmpfs_dir':
+        tmpfs_dir = xml.SubElement(self.tree, "tmpfs_dir")
+        tmpfs_dir.text = "/dev/shm"
       elif element == 'library_custom_filters':
         library_custom_filter = xml.SubElement(self.tree, "library_custom_filters")
       elif element == 'crop_border':
         crop_border = xml.SubElement(self.tree, "crop_border")
         crop_border.text = "False"
+      elif element == 'comics_dir':
+        comics_dir = xml.SubElement(self.tree, "comics_dir")
+        comics_dir.text = "."
 

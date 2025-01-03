@@ -1,7 +1,7 @@
 """main.py - Main window.
 
-Copyright (C) 2011-2024 Robert Kubik
-https://github.com/GeoRW/ACBF
+Copyright (C) 2011-2025 Robert Kubik
+https://github.com/ACBF-Advanced-Comic-Book-Format
 """
 
 # -------------------------------------------------------------------------
@@ -95,7 +95,7 @@ class MainWindow(gtk.Window):
         self.reset_enhancement_values()
 
         # check if custom temp dir is defined
-        self.tempdir_root = str(os.path.join(self.preferences.get_value("tmpfs"), 'acbfv'))
+        self.tempdir_root = str(os.path.join(self.preferences.get_value("tmpfs_dir"), 'acbfv'))
         if self.preferences.get_value("tmpfs") != 'False':
           print("Temporary directory override set to: " + self.tempdir_root)
         else:
@@ -112,13 +112,12 @@ class MainWindow(gtk.Window):
         if not os.path.exists(os.path.join(constants.CONFIG_DIR, 'Covers')):
           os.makedirs(os.path.join(constants.CONFIG_DIR, 'Covers'), 0o700)
 
-        if self.filename == None:
-          self.filename = "/home/whale/Work/ACBF/trunk/Sample Comic Book/xDoctorow, Cory - Craphound.acbf"
-          self.original_filename = self.filename
-        else:
+        self.filename = open_path
+        if open_path != None:
           prepared_file = fileprepare.FilePrepare(self, open_path, self.tempdir, True)
           self.filename = prepared_file.filename
-          self.original_filename = open_path
+        self.original_filename = open_path
+        
         self.acbf_document = acbfdocument.ACBFDocument(self, self.filename)
 
         # get last reading position
@@ -573,9 +572,8 @@ class MainWindow(gtk.Window):
       info = gtk.Label()
       info.set_markup(_('\n<span>ACBF Viewer is a comic book viewer for comic books in ACBF, CBZ and ACV formats.') + '\n' +
                       _('ACBF Viewer is licensed under the GNU General Public License.') + '\n\n' +
-                       '<small>Copyright 2011-2018 Robert Kubik\n' +
-                       'https://launchpad.net/acbf\n' +
-                       'http://acbf.wikia.com</small></span>')
+                       '<small>Copyright 2011-2025 Robert Kubik\n' +
+                       'https://github.com/ACBF-Advanced-Comic-Book-Format</small></span>')
       label.set_line_wrap(True)
       info.set_justify(gtk.Justification.CENTER)
       hbox.pack_start(info, True, True, 0)
