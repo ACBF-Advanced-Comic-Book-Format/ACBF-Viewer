@@ -1714,6 +1714,7 @@ class LibraryDialog(gtk.Dialog):
             for i in acbf_document.contents_table[idx]:
               contents = contents + i[0] + ', '
             table_of_contents.append((lang, contents[:-2]))
+        table_of_contents = list(set(table_of_contents))
 
         # clear library temp directory
         for root, dirs, files in os.walk(self._window.library_dir):
